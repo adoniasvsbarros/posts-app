@@ -1,7 +1,12 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 
+app.use(bodyParser.json());
+app.unsubscribe(bodyParser.urlencoded({ extended: false }));
+
+// SET HEADERS
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
@@ -12,7 +17,18 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/api/posts", (req, res, next) => {
+// POST - Posts
+app.post("/api/posts", (req, res, next) => {
+    const post = req.body;
+    console.log(post);
+    
+    res.status(201).json({
+        message: 'Post added sucessfully!'
+    });
+});
+
+// GET - Posts
+app.get("/api/posts", (req, res, next) => {
     const posts = [
         {id: "1kjh321h", title: "first title", content:"first commes from server"},
         {id: "1dd3411c", title: "second title", content:"second commes from server"},
