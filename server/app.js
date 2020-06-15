@@ -2,6 +2,16 @@ const express = require('express');
 
 const app = express();
 
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers", 
+        "Origin, X-Request-With, Content-Type, Accept",
+        "Access-Control-Allow-Methods","GET, POST, PATCH, DELETE, PUT, OPTIONS"
+    );
+    next();
+});
+
 app.use("/api/posts", (req, res, next) => {
     const posts = [
         {id: "1kjh321h", title: "first title", content:"first commes from server"},
