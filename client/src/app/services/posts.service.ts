@@ -19,6 +19,7 @@ export class PostsService {
           return {
             title: post.title,
             content: post.content,
+            image: post.image,
             id: post._id
           };
         });
@@ -34,11 +35,16 @@ export class PostsService {
   }
 
   getPost(id: string) {
-    return this.http.get<{_id: string, title: string, content: string}>('http://localhost:3000/api/posts/' + id);
+    return this.http.get<{_id: string, title: string, content: string, image: File}>('http://localhost:3000/api/posts/' + id);
   }
 
   addPost(post: Post): void {
-    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', post)
+    const postData = new FormData();
+    postData.append('title', post.title);
+    postData.append('content', post.content);
+    postData.append('image', post.image, post.title);
+
+    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', postData)
     .subscribe(responseData => {
       post.id = responseData.postId;
       this.posts.push(post);

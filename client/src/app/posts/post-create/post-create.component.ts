@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostsService } from 'src/app/services/posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Mode } from 'src/app/models/mode.enum';
+import { mimeType } from 'src/app/shared/validators/mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -28,7 +29,7 @@ export class PostCreateComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
       content: new FormControl(null, {validators: [Validators.required]}),
-      image: new FormControl(null, {validators: [Validators.required]})
+      image: new FormControl(null, {validators: [Validators.required], asyncValidators: [mimeType]})
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -39,8 +40,8 @@ export class PostCreateComponent implements OnInit {
         this.postsService.getPost(this.postId)
         .subscribe(postData => {
           this.isLoading = false;
-          this.post = {id: postData._id, title: postData.title, content: postData.content};
-          this.form.setValue({title: postData.title, content: postData.content})
+          this.post = {id: postData._id, title: postData.title, content: postData.content, image: postData.image};
+          this.form.setValue({title: postData.title, content: postData.content});
         });
       } else {
         this.mode = Mode.CREATE;
@@ -59,7 +60,8 @@ export class PostCreateComponent implements OnInit {
     const post: Post = {
       id: this.postId,
       title: this.form.value.title,
-      content: this.form.value.content
+      content: this.form.value.content,
+      image: this.form.value.image
     };
 
     this.mode === Mode.CREATE ? this.postsService.addPost(post) : this.postsService.updatePost(this.postId, post);
