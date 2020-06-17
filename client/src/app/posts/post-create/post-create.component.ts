@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post.model';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostsService } from 'src/app/services/posts.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Mode } from 'src/app/models/mode.enum';
 
 @Component({
@@ -11,6 +11,8 @@ import { Mode } from 'src/app/models/mode.enum';
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
+  form: FormGroup;
+
   enteredTitle = '';
   enteredContent = '';
   post: Post;
@@ -18,10 +20,16 @@ export class PostCreateComponent implements OnInit {
   private mode = Mode.CREATE;
   private postId: string;
 
+
   constructor(public postsService: PostsService, private route: ActivatedRoute){}
 
 
   ngOnInit(){
+    this.form = new FormGroup({
+      title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
+      content: new FormControl(null, {validators: [Validators.required]})
+    });
+
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         this.mode = Mode.EDIT;
@@ -31,6 +39,7 @@ export class PostCreateComponent implements OnInit {
         .subscribe(postData => {
           this.isLoading = false;
           this.post = {id: postData._id, title: postData.title, content: postData.content};
+          this.form.setValue({title: postData.title, content: postData.content})
         });
       } else {
         this.mode = Mode.CREATE;
@@ -39,20 +48,20 @@ export class PostCreateComponent implements OnInit {
     });
   }
 
-  onSavePost(form: NgForm): void{
-    if (form.invalid) {
+  onSavePost(): void{
+    if (this.form.invalid) {
       return;
     }
     this.isLoading = true;
 
     const post: Post = {
       id: this.postId,
-      title: form.value.title,
-      content: form.value.content
+      title: this.form.value.title,
+      content: this.form.value.content
     };
 
     this.mode === Mode.CREATE ? this.postsService.addPost(post) : this.postsService.updatePost(this.postId, post);
 
-    form.resetForm();
+    this.form.reset();
   }
 }
