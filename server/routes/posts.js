@@ -27,6 +27,33 @@ const storage = multer.diskStorage({
 
 const Post = require('../models/post');
 
+router.get("", (req, res, next) => {
+    const pageSize = +req.query.pageSize;
+    const currentPage = +req.query.page;
+    const postQuery = Post.find();
+    let fetchedPosts;
+
+    if (pageSize && currentPage) {
+        postQuery
+            .skip(pageSize * (currentPage - 1))
+            .limit(pageSize)
+            .sort('-createdOn');
+    }
+
+    postQuery
+        .then(documents => {
+            fetchedPosts = documents;
+            return Post.count();
+        })
+        .then(count => {
+            res.status(200).json({
+                message: 'Posts fetched succesfully!',
+                posts: fetchedPosts,
+                maxPosts: count
+            });
+        });    
+});
+
 router.get("/:id", (req, res, next) => {
     Post.findById(req.params.id).then(post => {
         if(post){
@@ -37,15 +64,6 @@ router.get("/:id", (req, res, next) => {
             })
         }
     });
-});
-
-router.get("", (req, res, next) => {
-    Post.find().then(documents => {
-        res.status(200).json({
-            message: 'Posts fetched succesfully!',
-            posts: documents
-        });
-    });    
 });
 
 router.post("", multer({storage: storage}).single("image"), (req, res, next) => {
@@ -89,7 +107,6 @@ router.put("/:id", multer({storage: storage}).single("image"), (req, res, next) 
         })
     });
 });
-
 
 router.delete("/:id", (req, res, next) => {
     Post.deleteOne({_id: req.params.id}).then(result => {

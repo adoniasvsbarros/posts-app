@@ -3,6 +3,10 @@ mat-spinner {
   margin-top: 1rem;
 }
 
+mat-paginator {
+  margin-top: 1rem;
+}
+
 :host {
   display: block;
   margin-top: 1rem;
