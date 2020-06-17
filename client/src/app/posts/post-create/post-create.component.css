@@ -6,3 +6,8 @@ textarea {
 mat-card {
   margin-top: 1rem;
 }
+
+mat-spinner {
+  margin: auto;
+  margin-top: 1rem;
+}
