@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post.model';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostsService } from 'src/app/services/posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Mode } from 'src/app/models/mode.enum';
@@ -20,14 +20,15 @@ export class PostCreateComponent implements OnInit {
   private mode = Mode.CREATE;
   private postId: string;
 
+  imagePreview: string;
 
   constructor(public postsService: PostsService, private route: ActivatedRoute){}
-
 
   ngOnInit(){
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
-      content: new FormControl(null, {validators: [Validators.required]})
+      content: new FormControl(null, {validators: [Validators.required]}),
+      image: new FormControl(null, {validators: [Validators.required]})
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -52,6 +53,7 @@ export class PostCreateComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+
     this.isLoading = true;
 
     const post: Post = {
@@ -63,5 +65,20 @@ export class PostCreateComponent implements OnInit {
     this.mode === Mode.CREATE ? this.postsService.addPost(post) : this.postsService.updatePost(this.postId, post);
 
     this.form.reset();
+  }
+
+  onImagePicked(event: Event): void {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({image: file});
+    this.form.get('image').updateValueAndValidity();
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = (reader.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    console.log(file);
+    console.log(this.form);
   }
 }
