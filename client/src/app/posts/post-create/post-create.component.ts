@@ -40,8 +40,8 @@ export class PostCreateComponent implements OnInit {
         this.postsService.getPost(this.postId)
         .subscribe(postData => {
           this.isLoading = false;
-          this.post = {id: postData._id, title: postData.title, content: postData.content, image: postData.image};
-          this.form.setValue({title: postData.title, content: postData.content});
+          this.post = {id: postData._id, title: postData.title, content: postData.content, imagePath: postData.imagePath};
+          this.form.setValue({title: postData.title, content: postData.content, image: postData.imagePath});
         });
       } else {
         this.mode = Mode.CREATE;
@@ -57,14 +57,10 @@ export class PostCreateComponent implements OnInit {
 
     this.isLoading = true;
 
-    const post: Post = {
-      id: this.postId,
-      title: this.form.value.title,
-      content: this.form.value.content,
-      image: this.form.value.image
-    };
 
-    this.mode === Mode.CREATE ? this.postsService.addPost(post) : this.postsService.updatePost(this.postId, post);
+    this.mode === Mode.CREATE ?
+      this.postsService.addPost(this.form.value.title, this.form.value.content, this.form.value.image)
+      : this.postsService.updatePost(this.postId, this.form.value.title, this.form.value.content, this.form.value.image);
 
     this.form.reset();
   }
@@ -79,8 +75,5 @@ export class PostCreateComponent implements OnInit {
       this.imagePreview = (reader.result as string);
     };
     reader.readAsDataURL(file);
-
-    console.log(file);
-    console.log(this.form);
   }
 }
