@@ -11,7 +11,7 @@ export class PostsService {
 
   constructor(private http: HttpClient){}
 
-  getPosts() {
+  getPosts(): void {
     this.http.get<{message: string, posts: any[]}>('http://localhost:3000/api/posts')
       .pipe(map(postData => {
         return postData.posts.map(post => {
@@ -32,13 +32,23 @@ export class PostsService {
     return this.postsUpdated.asObservable();
   }
 
+  getPost(id: string): Post {
+    return {...this.posts.find(p => p.id === id)};
+  }
+
   addPost(post: Post): void {
     this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', post)
     .subscribe(responseData => {
-      const id = responseData.postId;
-      post.id = id;
+      post.id = responseData.postId;
       this.posts.push(post);
       this.postsUpdated.next([...this.posts]);
+    });
+  }
+
+  updatePost(id: string, post: Post): void {
+    this.http.put('http://localhost:3000/api/posts/' + id, post)
+    .subscribe(responseData => {
+      console.log(responseData);
     });
   }
 
