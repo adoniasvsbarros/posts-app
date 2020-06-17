@@ -1,7 +1,7 @@
 # PostsApp
 Let's Manage your posts!
 
-## Built with
+### Built with
 <ul>
   <li> Angular 9 </li>
   <li> Angular Material </li>
@@ -10,15 +10,18 @@ Let's Manage your posts!
   <li> MongoDB </li>
 </ul>
 
-# Running the project
+### Running the project
 
 Install the dependencies for each project using ```npm install``` inside the client and server folders.
 
 
 Client - Inside the client folder execute: ```ng serve```.
 
+
 Server - Inside the server folder execute: ```npm run start:server```.
 
+
+### More Info
 
 <p>For more information: https://www.udemy.com/course/angular-2-and-nodejs-the-practical-guide</p>
 ---
