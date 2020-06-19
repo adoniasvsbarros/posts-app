@@ -37,8 +37,7 @@ router.get("", (req, res, next) => {
     if (pageSize && currentPage) {
         postQuery
             .skip(pageSize * (currentPage - 1))
-            .limit(pageSize)
-            .sort('-createdOn');
+            .limit(pageSize);
     }
 
     postQuery
@@ -67,26 +66,29 @@ router.get("/:id", (req, res, next) => {
     });
 });
 
-router.post("", checkAuth, multer({storage: storage}).single("image"), (req, res, next) => {
-    const url = req.protocol + '://' + req.get("host"); 
-
-    const post = new Post({
+router.post(
+    "",
+    checkAuth,
+    multer({ storage: storage }).single("image"),
+    (req, res, next) => {
+      const url = req.protocol + "://" + req.get("host");
+      const post = new Post({
         title: req.body.title,
         content: req.body.content,
         imagePath: url + "/images/" + req.file.filename
     });
-
-    post.save().then(createdPost => {
+    console.log('im here1');
+      post.save().then(createdPost => {
         res.status(201).json({
-            message: 'Post added sucessfully!',
-            post: {
-                ...createdPost,
-                id: createdPost._id,
-            }
+          message: "Post added successfully",
+          post: {
+            ...createdPost,
+            id: createdPost._id
+          }
         });
-    });
-    
-});
+      });
+    }
+  );
 
 router.put("/:id", checkAuth, multer({storage: storage}).single("image"), (req, res, next) => {
     let imagePath = req.body.imagePath;
