@@ -24,7 +24,7 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
-  createUser(email: string, password: string){
+  createUser(email: string, password: string): void{
     const authData: AuthData = {email, password};
     this.http
       .post('http://localhost:3000/api/user/signup', authData)
@@ -33,7 +33,7 @@ export class AuthService {
       });
   }
 
-  login(email: string, password: string){
+  login(email: string, password: string): void{
     const authData: AuthData = {email, password};
     this.http.post<{token: string}>('http://localhost:3000/api/user/login', authData)
       .subscribe(response => {
@@ -43,5 +43,11 @@ export class AuthService {
           this.authStatusListener.next(true);
         }
       });
+  }
+
+  logout(): void{
+    this.token = null;
+    this.isAuthenticated = false;
+    this.authStatusListener.next(false);
   }
 }
