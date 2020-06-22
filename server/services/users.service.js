@@ -1,12 +1,9 @@
-const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
-const router = express.Router();
-
-router.post("/signup", (req, res, next) => {
+exports.createUser = (req, res, next) => {
     bcrypt.hash(req.body.password, 10, )
         .then(hash => {
             const user = new User({
@@ -26,9 +23,9 @@ router.post("/signup", (req, res, next) => {
                     });
                 });
         });
-});
+    }
 
-router.post("/login", (req, res, next) => {
+exports.userLogin = (req, res, next) => {
     let fetchedUser;
 
     User.findOne({ email: req.body.email })
@@ -65,6 +62,4 @@ router.post("/login", (req, res, next) => {
                 message: 'Invalid authentication credentials!'
             });
         });
-});
-
-module.exports = router;
+    }
