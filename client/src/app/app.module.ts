@@ -12,16 +12,15 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { ErrorDialogComponent } from './shared/components/error-dialog/error-dialog.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { PostsModule } from './posts/posts.module';
-import { AuthModule } from './auth/auth.module';
-import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    ErrorDialogComponent
   ],
   imports: [
-    AuthModule,
     PostsModule,
     BrowserModule,
     AppRoutingModule,
@@ -29,7 +28,6 @@ import { SharedModule } from './shared/shared.module';
     FormsModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
-    SharedModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
