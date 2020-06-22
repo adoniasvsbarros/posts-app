@@ -9,7 +9,9 @@ const usersController = require('./controllers/users.controller');
 const app = express();
 
 // CONNECT DATABASE
-mongoose.connect("mongodb+srv://avsb:2SiR0EVVtsj1bxrS@cluster0-vabyl.mongodb.net/node-angular?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://avsb:" + 
+process.env.MONGO_ATLAS_PW + 
+"@cluster0-vabyl.mongodb.net/node-angular?retryWrites=true&w=majority")
     .then(() => {
         console.log('Connected to the database');
     })
