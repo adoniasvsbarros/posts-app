@@ -15,7 +15,8 @@ process.env.MONGO_ATLAS_PW +
     .then(() => {
         console.log('Connected to the database');
     })
-    .catch(() => {
+    .catch(error => {
+        console.log('#################\n' + error);
         console.log('Connection failed'); 
     });
 

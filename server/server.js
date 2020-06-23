@@ -1,5 +1,4 @@
 const http = require('http');
-const debug = require('debug')('node-angular');
 const app = require('./app');
 
 const normalizePort = val => {
@@ -42,7 +41,7 @@ const onError = error => {
 const onListening = () => {
     const addr = server.address(); 
     const bind = typeof addr === "string" ? "pipe " + addr : "port " + port;
-    debug("Listening on port " + bind);
+    console.log("Listening on port " + bind);
 }
 
 const port = normalizePort(process.env.DATABASEURL || "3000");
