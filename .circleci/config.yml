@@ -7,11 +7,9 @@ jobs:
       name: node/default
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: 
-                command: npm install
-                working_directory: ./client
-            - run: 
-                command: npm test
-                working_directory: ./client
+      - run: 
+          command: npm install
+          working_directory: ./client
+      - run: 
+          command: npm test
+          working_directory: ./client
