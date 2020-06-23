@@ -1,5 +1,5 @@
 # PostsApp
-Let's Manage your posts!
+Let's Manage your posts! [Access our website!](http://mean-angular-node-avsb.s3-website.us-east-2.amazonaws.com)
 
 ### Built with
 <ul>
