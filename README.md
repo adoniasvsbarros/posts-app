@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/adoniasvsbarros/posts-app.svg?style=svg)](https://circleci.com/gh/adoniasvsbarros/posts-app)
+
 # PostsApp
 Let's Manage your posts! [Access our website!](http://mean-angular-node-avsb.s3-website.us-east-2.amazonaws.com)
 
