@@ -6,7 +6,7 @@ Let's Manage your posts! [Access our website!](http://mean-angular-node-avsb.s3-
 <ul>
   <li> Angular 9 </li>
   <li> Angular Material </li>
-  <li> NodeJs </li>
+  <li> NodeJs (Javascript) </li>
   <li> Express Framework </li>
   <li> MongoDB </li>
 </ul>
